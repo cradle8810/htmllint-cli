@@ -1,4 +1,5 @@
 FROM node:21
+LABEL org.opencontainers.image.source = "https://github.com/cradle8810/htmllint-cli"
 
 WORKDIR "/tmp"
 
