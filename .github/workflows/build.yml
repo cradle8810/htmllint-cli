@@ -3,8 +3,13 @@ name: HTML Lints
 
 on:
   push:
+    tags:
+      - 'latest'
+      - 'v*'
+  pull_request:
     branches:
-      - '**'
+    - 'master'
+  workflow_dispatch:
 
 env:
   CI_IMAGE_NAME: 'ghcr.io/cradle8810/htmllint'      
@@ -24,7 +29,9 @@ jobs:
           id: docker_meta
           uses: docker/metadata-action@v5
           with:
-            images: ${{ env.CI_IMAGE_NAME }}   
+            images: ${{ env.CI_IMAGE_NAME }}
+            labels: |
+              org.opencontainers.image.source = "https://github.com/cradle8810/htmllint-cli"
 
         - name: Login to DockerHub
           uses: docker/login-action@v3
@@ -37,6 +44,6 @@ jobs:
           uses: docker/build-push-action@v2
           with:
             context: .
-            push: true
+            push: ${{ github.event_name != 'pull_request' }}
             tags: ${{ steps.docker_meta.outputs.tags }}
             labels: ${{ steps.docker_meta.outputs.labels }}
