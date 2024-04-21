@@ -9,6 +9,4 @@ RUN npm install \
                 htmllint-cli && \
     npm cache verify --force
 
-RUN htmllint init
-
 CMD ["htmllint", "--help"]
